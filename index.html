@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 2026 - Elite System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Project 2026 - Elite Mobile</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -14,132 +14,183 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .timeline-scroll::-webkit-scrollbar { height: 4px; }
-        .timeline-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 4px; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        /* Mobile First Optimizations */
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        
+        /* Smooth Scroll & Hidden Scrollbars */
+        .timeline-scroll::-webkit-scrollbar { height: 0px; background: transparent; }
+        .timeline-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Glass & Neon Effects */
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
         .timeline-line { position: absolute; left: 27px; top: 20px; bottom: 0; width: 2px; background: linear-gradient(to bottom, #3b82f6, #0f172a); z-index: 0; }
+        
+        /* Animation Classes */
         @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
         .animate-blob { animation: blob 7s infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
+        
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
+        .winner-glow { animation: pulse-gold 2s infinite; border-color: #eab308 !important; }
+
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden selection:bg-blue-500 selection:text-white">
 
     <div id="login-view" class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
-            <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+            <div class="absolute top-0 right-0 w-80 h-80 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob"></div>
+            <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
         </div>
 
-        <div class="relative z-10 w-full max-w-md">
-            <div class="text-center mb-10">
-                <h1 class="text-5xl font-black italic tracking-tighter text-white mb-2">PROJECT <span class="text-blue-500">2026</span></h1>
-                <div class="inline-block px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-[10px] font-bold tracking-widest uppercase text-blue-400">Sistema Elite de Controle</div>
+        <div class="relative z-10 w-full max-w-md flex flex-col gap-6">
+            
+            <div class="text-center">
+                <h1 class="text-5xl font-black italic tracking-tighter text-white mb-1">PROJECT <span class="text-blue-500">2026</span></h1>
+                <p class="text-slate-400 text-[10px] font-bold tracking-[0.2em] uppercase">Elite Performance Tracker</p>
             </div>
 
-            <div class="glass rounded-2xl p-6 mb-8 shadow-2xl relative overflow-hidden group">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-rose-500"></div>
-                <div class="flex justify-between items-end mb-6">
-                    <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-trophy text-yellow-500 mr-2"></i>Placar da Temporada</h3>
-                </div>
-                <div class="grid grid-cols-3 gap-4 text-center items-center">
-                    <div>
-                        <div class="w-12 h-12 mx-auto bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-2 border border-blue-500/20"><i class="fa-solid fa-mars text-xl"></i></div>
-                        <div class="text-2xl font-black text-white" id="rank-weight-ele">--</div>
-                        <div class="text-[10px] text-slate-400 uppercase font-bold">Peso Off</div>
-                    </div>
-                    <div class="text-2xl font-black text-slate-700 italic">VS</div>
-                    <div>
-                        <div class="w-12 h-12 mx-auto bg-rose-500/10 rounded-full flex items-center justify-center text-rose-400 mb-2 border border-rose-500/20"><i class="fa-solid fa-venus text-xl"></i></div>
-                        <div class="text-2xl font-black text-white" id="rank-weight-ela">--</div>
-                        <div class="text-[10px] text-slate-400 uppercase font-bold">Peso Off</div>
+            <div class="glass rounded-2xl p-1 shadow-2xl overflow-hidden ring-1 ring-white/10">
+                
+                <div id="winner-banner" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-3 text-center border-b border-white/5">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Líder Geral do Desafio</div>
+                    <div class="flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-crown text-yellow-400 text-lg animate-bounce"></i>
+                        <span class="text-xl font-black text-white tracking-wide" id="global-winner-name">CALCULANDO...</span>
                     </div>
                 </div>
+
+                <div class="p-4 grid grid-cols-2 gap-4 divide-x divide-white/10 relative">
+                    <div class="text-center relative group">
+                        <div id="crown-ele" class="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl opacity-0 transition-opacity">👑</div>
+                        
+                        <div class="flex items-center justify-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa-solid fa-mars"></i></div>
+                            <span class="font-black text-white text-lg">ELE</span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
+                                <div class="text-[9px] text-slate-400 uppercase">Total Checkins</div>
+                                <div class="text-xl font-bold text-blue-400" id="total-checks-ele">0</div>
+                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-checks-ele"></i>
+                            </div>
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
+                                <div class="text-[9px] text-slate-400 uppercase">Peso Perdido</div>
+                                <div class="text-sm font-bold text-white" id="weight-loss-ele">--</div>
+                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-weight-ele"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center relative">
+                        <div id="crown-ela" class="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl opacity-0 transition-opacity">👑</div>
+
+                        <div class="flex items-center justify-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center text-rose-400"><i class="fa-solid fa-venus"></i></div>
+                            <span class="font-black text-white text-lg">ELA</span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
+                                <div class="text-[9px] text-slate-400 uppercase">Total Checkins</div>
+                                <div class="text-xl font-bold text-rose-400" id="total-checks-ela">0</div>
+                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-checks-ela"></i>
+                            </div>
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
+                                <div class="text-[9px] text-slate-400 uppercase">Peso Perdido</div>
+                                <div class="text-sm font-bold text-white" id="weight-loss-ela">--</div>
+                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-weight-ela"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-900/50 p-2 text-center border-t border-white/5">
+                    <p class="text-[10px] text-slate-500">🏆 O Líder é definido pelo total de tarefas cumpridas.</p>
+                </div>
             </div>
 
-            <div class="space-y-4">
-                <button onclick="window.appLogin('user_ele')" class="w-full group relative flex items-center p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-blue-500 transition-all overflow-hidden">
-                    <div class="absolute inset-0 bg-blue-600/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
-                    <div class="relative z-10 flex items-center w-full">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold mr-4 shadow-lg shadow-blue-500/20">
-                            <i class="fa-solid fa-mars text-xl"></i>
-                        </div>
-                        <span class="font-bold text-lg flex-1">Acessar como Ele</span>
-                        <i class="fa-solid fa-arrow-right text-slate-500 group-hover:text-blue-400"></i>
-                    </div>
+            <div class="flex flex-col gap-3">
+                <button onclick="window.appLogin('user_ele')" class="w-full bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-900/50 flex items-center justify-center gap-3 transition-transform active:scale-95">
+                    <i class="fa-solid fa-mars text-lg"></i>
+                    <span>ENTRAR COMO ELE</span>
                 </button>
-
-                <button onclick="window.appLogin('user_ela')" class="w-full group relative flex items-center p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-rose-500 transition-all overflow-hidden">
-                    <div class="absolute inset-0 bg-rose-600/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
-                    <div class="relative z-10 flex items-center w-full">
-                        <div class="w-10 h-10 rounded-lg bg-rose-500 flex items-center justify-center text-white font-bold mr-4 shadow-lg shadow-rose-500/20">
-                            <i class="fa-solid fa-venus text-xl"></i>
-                        </div>
-                        <span class="font-bold text-lg flex-1">Acessar como Ela</span>
-                        <i class="fa-solid fa-arrow-right text-slate-500 group-hover:text-rose-400"></i>
-                    </div>
+                <button onclick="window.appLogin('user_ela')" class="w-full bg-gradient-to-r from-rose-700 to-rose-600 hover:from-rose-600 hover:to-rose-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-rose-900/50 flex items-center justify-center gap-3 transition-transform active:scale-95">
+                    <i class="fa-solid fa-venus text-lg"></i>
+                    <span>ENTRAR COMO ELA</span>
                 </button>
             </div>
-            <p id="login-status" class="mt-6 text-center text-[10px] text-slate-600 font-mono">Secure Firebase Connection v4.1</p>
+            
+            <p id="login-status" class="text-center text-[10px] text-slate-600 font-mono">Mobile Elite V6.0 • Ready</p>
         </div>
     </div>
 
     <div id="app-view" class="hidden min-h-screen pb-24 fade-in bg-[#0f172a] relative">
         <div class="bg-slate-900 rounded-b-[2.5rem] shadow-2xl relative z-20 border-b border-slate-800">
             <div class="p-6 pt-8">
-                <div class="flex justify-between items-center mb-8">
+                <div class="flex justify-between items-center mb-6">
                     <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Painel de Controle</span>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Online
                         </div>
                         <h1 class="text-2xl font-black italic text-white" id="header-date">HOJE</h1>
                     </div>
+                    
                     <div class="flex gap-3">
                         <div class="relative">
-                            <button onclick="toggleNotifs()" class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-600 transition-all"><i class="fa-regular fa-bell"></i></button>
-                            <div id="notif-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-slate-900"></div>
-                            <div id="notif-drop" class="hidden absolute right-0 top-12 w-64 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-2 z-50"><div id="notif-list" class="text-xs text-slate-400 p-2">Sem notificações.</div></div>
+                            <button onclick="toggleNotifs()" class="relative w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all active:scale-95">
+                                <i class="fa-regular fa-bell"></i>
+                                <div id="notif-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-slate-900"></div>
+                            </button>
+                            <div id="notif-drop" class="hidden absolute right-0 top-14 w-72 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
+                                <div class="bg-slate-900 p-3 border-b border-slate-700 flex justify-between items-center">
+                                    <span class="text-xs font-bold text-white">Alertas</span>
+                                    <span class="text-[10px] text-slate-500 animate-pulse" id="next-task-timer">...</span>
+                                </div>
+                                <div id="notif-list" class="max-h-60 overflow-y-auto p-1 space-y-1"></div>
+                            </div>
                         </div>
-                        <button onclick="openConfig()" class="w-10 h-10 rounded-xl bg-blue-600 shadow-lg shadow-blue-600/20 flex items-center justify-center text-white hover:bg-blue-500 transition-all"><i class="fa-solid fa-sliders"></i></button>
+
+                        <button onclick="openConfig()" class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/20 active:scale-95">
+                            <i class="fa-solid fa-sliders"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-4 relative overflow-hidden shadow-lg shadow-blue-900/50">
-                        <i class="fa-solid fa-droplet absolute -right-2 -bottom-4 text-8xl text-white opacity-10"></i>
-                        <div class="relative z-10">
-                            <div class="text-[10px] font-bold text-blue-200 uppercase mb-1">Hidratação</div>
-                            <div class="text-2xl font-black text-white" id="water-display">0.0L</div>
-                            <div class="w-full bg-blue-900/40 h-1.5 rounded-full mt-2 overflow-hidden"><div id="water-bar" class="h-full bg-white w-0 transition-all duration-500"></div></div>
-                            <div class="text-[10px] text-blue-200 mt-1 text-right">Meta: 5L</div>
+                <div class="bg-gradient-to-r from-blue-700 to-cyan-600 rounded-2xl p-5 relative overflow-hidden shadow-lg mb-6 group">
+                    <i class="fa-solid fa-glass-water absolute -right-6 -bottom-6 text-9xl text-white opacity-10 group-hover:scale-110 transition-transform duration-500"></i>
+                    <div class="relative z-10 flex justify-between items-end">
+                        <div>
+                            <div class="text-[10px] font-bold text-blue-200 uppercase tracking-wide">Hidratação</div>
+                            <div class="text-3xl font-black text-white leading-tight" id="water-display">0.0L</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-blue-100 font-bold">Meta 5L</div>
+                            <div class="text-[10px] text-blue-200" id="water-pct">0%</div>
                         </div>
                     </div>
-                    <div class="glass-card rounded-2xl p-4 flex flex-col justify-center items-center relative overflow-hidden">
-                         <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent"></div>
-                         <div class="relative z-10 text-center">
-                            <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Progresso</div>
-                            <div class="text-3xl font-black text-white" id="daily-pct">0%</div>
-                            <div class="text-[10px] text-green-400 font-bold mt-1" id="daily-msg">Foco!</div>
-                         </div>
+                    <div class="w-full bg-black/20 h-2 rounded-full mt-3 overflow-hidden">
+                        <div id="water-bar" class="h-full bg-white w-0 transition-all duration-700 ease-out shadow-[0_0_10px_white]"></div>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-800/50 pt-4">
-                    <div class="flex overflow-x-auto gap-3 pb-2 timeline-scroll snap-x" id="date-navigator"></div>
+                <div class="border-t border-slate-800/50 pt-2">
+                    <div class="flex overflow-x-auto gap-3 pb-2 timeline-scroll snap-x px-1" id="date-navigator"></div>
                 </div>
             </div>
         </div>
 
         <div class="max-w-md mx-auto px-4 -mt-6 relative z-10">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl min-h-[400px] p-2">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl min-h-[500px] p-2 pb-20">
                 <div class="px-4 py-4 flex justify-between items-center border-b border-slate-800 mb-2">
                     <h3 class="font-bold text-slate-300 text-sm">Cronograma</h3>
-                    <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700" id="focus-pill">Carregando...</span>
+                    <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700 font-bold uppercase" id="focus-pill">...</span>
                 </div>
                 <div class="relative px-2 pb-10" id="tasks-list">
                     <div class="timeline-line"></div>
@@ -150,87 +201,51 @@
 
     <div id="config-view" class="hidden fixed inset-0 z-50 bg-slate-900 overflow-y-auto">
         <div class="max-w-md mx-auto min-h-screen bg-slate-900">
-            <div class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-4 flex justify-between items-center z-50">
-                <button onclick="closeConfig()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
-                <h2 class="font-bold text-white">Gestor de Rotina</h2>
-                <button onclick="saveConfigChanges()" class="text-green-400 font-bold text-sm">Salvar</button>
+            <div class="sticky top-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 p-4 flex justify-between items-center z-50 shadow-md">
+                <button onclick="closeConfig()" class="text-slate-400 flex items-center text-sm font-bold"><i class="fa-solid fa-chevron-left mr-2"></i>Voltar</button>
+                <h2 class="font-bold text-white">Configurar</h2>
+                <button onclick="saveConfigChanges()" class="text-green-400 font-bold text-sm bg-green-400/10 px-3 py-1 rounded-lg">Salvar</button>
             </div>
-
-            <div class="p-4">
-                <div class="flex p-1 bg-slate-800 rounded-lg mb-6">
-                    <button onclick="switchTab('workouts')" id="tab-workouts" class="flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all">1. Meus Treinos</button>
-                    <button onclick="switchTab('schedule')" id="tab-schedule" class="flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all">2. Agenda Semanal</button>
+            
+            <div class="p-4 pb-20">
+                <div class="flex p-1 bg-slate-800 rounded-xl mb-6">
+                    <button onclick="switchTab('workouts')" id="tab-workouts" class="flex-1 py-3 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-lg">1. Treinos</button>
+                    <button onclick="switchTab('schedule')" id="tab-schedule" class="flex-1 py-3 text-xs font-bold rounded-lg text-slate-400">2. Agenda</button>
                 </div>
 
-                <div id="view-workouts" class="animate-fadeIn">
-                    <div class="bg-blue-900/20 border border-blue-500/20 p-3 rounded-lg text-xs text-blue-300 mb-4">
-                        <i class="fa-solid fa-info-circle mr-1"></i> Crie suas fichas aqui (Ex: Treino A). Depois vincule elas na Agenda.
+                <div id="view-workouts" class="animate-fadeIn space-y-4">
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Novo Treino</label>
+                        <input type="text" id="new-wk-name" placeholder="Nome (Ex: Treino A)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm mb-2 focus:border-blue-500 outline-none">
+                        <textarea id="new-wk-desc" placeholder="Exercícios..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm h-24 mb-3 focus:border-blue-500 outline-none"></textarea>
+                        <button onclick="addWorkout()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg active:scale-95 transition-transform">Adicionar Ficha</button>
                     </div>
-                    <div class="space-y-3 mb-6">
-                        <input type="text" id="new-wk-name" placeholder="Nome da Ficha (ex: Treino A)" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white text-sm focus:border-blue-500 outline-none">
-                        <textarea id="new-wk-desc" placeholder="Cole os exercícios aqui..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white text-sm h-32 focus:border-blue-500 outline-none"></textarea>
-                        <button onclick="addWorkout()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-colors"><i class="fa-solid fa-plus mr-2"></i>Salvar Ficha</button>
-                    </div>
-                    <h3 class="text-slate-500 text-xs font-bold uppercase mb-2">Fichas Salvas</h3>
-                    <div id="workouts-list" class="space-y-2 pb-10"></div>
+                    <div id="workouts-list" class="space-y-2"></div>
                 </div>
 
-                <div id="view-schedule" class="hidden animate-fadeIn">
-                    <div class="bg-purple-900/20 border border-purple-500/20 p-3 rounded-lg text-xs text-purple-300 mb-4">
-                        <i class="fa-solid fa-magic mr-1"></i> Use a "Importação Rápida" para colar o texto inteiro ou adicione item por item.
+                <div id="view-schedule" class="hidden animate-fadeIn space-y-4">
+                    <select id="cfg-day" onchange="renderDayPreview()" class="w-full bg-slate-800 border border-slate-700 text-white p-3 rounded-xl font-bold mb-2 outline-none appearance-none"><option value="monday">Segunda-Feira</option><option value="tuesday">Terça-Feira</option><option value="wednesday">Quarta-Feira</option><option value="thursday">Quinta-Feira</option><option value="friday">Sexta-Feira</option><option value="saturday">Sábado</option><option value="sunday">Domingo</option></select>
+                    
+                    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+                        <h4 class="text-blue-400 text-xs font-bold uppercase mb-3"><i class="fa-solid fa-paste mr-2"></i>Importação Rápida (Texto)</h4>
+                        <textarea id="bulk-text" placeholder="Cole aqui... Ex: 07:00 Café: Ovos..." class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 text-xs h-32 font-mono mb-3 leading-relaxed"></textarea>
+                        <button onclick="parseBulkText()" class="w-full bg-slate-700 text-white font-bold py-3 rounded-lg text-xs hover:bg-slate-600">Processar Texto</button>
                     </div>
-
-                    <select id="cfg-day" onchange="renderDayPreview()" class="w-full bg-slate-800 border border-slate-700 text-white p-3 rounded-lg font-bold mb-4 outline-none">
-                        <option value="monday">Segunda-Feira</option><option value="tuesday">Terça-Feira</option>
-                        <option value="wednesday">Quarta-Feira</option><option value="thursday">Quinta-Feira</option>
-                        <option value="friday">Sexta-Feira</option><option value="saturday">Sábado</option>
-                        <option value="sunday">Domingo</option>
-                    </select>
-
-                    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-6 shadow-lg">
-                        <h4 class="text-blue-400 text-sm font-bold mb-3 flex items-center"><i class="fa-solid fa-bolt mr-2"></i>Importação Rápida</h4>
-                        <textarea id="bulk-text" placeholder="Cole aqui... Ex:&#10;07:00: Café&#10;12:00: Almoço&#10;19:30 (Treino B): Supino..." class="w-full bg-slate-900 border border-slate-700 text-white rounded p-3 text-xs h-32 font-mono mb-3 leading-relaxed"></textarea>
-                        <button onclick="parseBulkText()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-lg text-sm transition-colors border border-slate-600">Processar Texto</button>
-                    </div>
-
-                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 mb-6">
-                        <h4 class="text-slate-300 text-sm font-bold mb-3">Adicionar Item Manual</h4>
-                        <div class="flex gap-2 mb-3 text-xs">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="itemType" value="text" checked onclick="toggleInputType()" class="accent-blue-500"><span class="text-slate-300">Dieta/Texto</span></label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="itemType" value="workout" onclick="toggleInputType()" class="accent-blue-500"><span class="text-slate-300">Vincular Treino</span></label>
-                        </div>
-                        <div class="flex gap-2 mb-2">
-                            <input type="time" id="item-time" class="bg-slate-900 border border-slate-700 text-white rounded p-2 text-sm w-24">
-                            <input type="text" id="item-title-text" placeholder="Título" class="bg-slate-900 border border-slate-700 text-white rounded p-2 text-sm flex-1">
-                            <select id="item-workout-select" class="hidden bg-slate-900 border border-slate-700 text-white rounded p-2 text-sm flex-1"><option value="">Escolha a Ficha...</option></select>
-                        </div>
-                        <textarea id="item-desc-text" placeholder="Descrição" class="w-full bg-slate-900 border border-slate-700 text-white rounded p-2 text-sm h-16 mb-2"></textarea>
-                        <button onclick="addItemToSchedule()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded-lg text-sm">Adicionar</button>
-                    </div>
-
-                    <h4 class="text-slate-500 text-xs font-bold uppercase mb-2">Resumo do Dia Selecionado</h4>
-                    <div id="day-preview-list" class="space-y-2 pb-10"></div>
+                    
+                    <div class="text-slate-500 text-[10px] font-bold uppercase mt-4 mb-2">Itens Atuais</div>
+                    <div id="day-preview-list" class="space-y-2"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="weigh-in-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-xs p-6 text-center shadow-2xl">
-            <h2 class="text-xl font-black text-white mb-4">Check-in Obrigatório</h2>
-            <input type="number" id="weight-input" step="0.1" placeholder="00.0 Kg" class="w-full text-center text-4xl font-black text-white bg-transparent border-b-2 border-slate-600 py-2 mb-6">
-            <button onclick="submitWeight()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl">Confirmar Peso</button>
-        </div>
-    </div>
-
-    <div id="edit-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-6 shadow-2xl">
-            <div class="flex justify-between mb-4"><h3 class="text-white font-bold">Editar Item</h3><button onclick="document.getElementById('edit-modal').classList.add('hidden')" class="text-slate-400"><i class="fa-solid fa-times"></i></button></div>
-            <input type="hidden" id="edit-idx">
-            <input type="text" id="edit-title" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded mb-2">
-            <textarea id="edit-desc" class="w-full bg-slate-900 border border-slate-700 text-white p-2 rounded h-24 mb-2"></textarea>
-            <div class="flex gap-2"><input type="time" id="edit-time" class="bg-slate-900 border border-slate-700 text-white p-2 rounded w-1/3"><input type="number" id="edit-water" class="bg-slate-900 border border-slate-700 text-white p-2 rounded w-2/3" placeholder="ml Água"></div>
-            <button onclick="saveEdit()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl mt-4">Salvar</button>
+    <div id="weigh-in-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm p-6">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-8 text-center shadow-2xl">
+            <div class="w-16 h-16 bg-orange-500/20 text-orange-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce"><i class="fa-solid fa-weight-scale"></i></div>
+            <h2 class="text-2xl font-black text-white mb-2">Segundou!</h2>
+            <p class="text-slate-400 text-sm mb-6">Hora da verdade. Registre seu peso.</p>
+            <input type="number" id="weight-input" step="0.1" placeholder="00.0" class="w-full text-center text-5xl font-black text-white bg-transparent border-b-2 border-slate-600 focus:border-orange-500 outline-none py-2 mb-8 placeholder:text-slate-700">
+            <button onclick="submitWeight()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl text-lg transition-transform active:scale-95">Confirmar Peso</button>
         </div>
     </div>
 
@@ -245,126 +260,160 @@
         const db = getFirestore(app);
 
         const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-        const state = { user: null, date: new Date().toISOString().split('T')[0], schedule: {}, workouts: {}, progress: {}, weights: {}, tempSchedule: {} };
+        const state = { user: null, date: new Date().toISOString().split('T')[0], schedule: {}, workouts: {}, progress: {}, weights: {}, tempSchedule: {}, alerts: [] };
 
+        // --- GLOBAL STATS (RANKING) ---
         window.onload = () => {
-            onSnapshot(doc(db, "carnaval_2026", "weights"), (s) => s.exists() && updateRanking(s.data()));
-            onSnapshot(doc(db, "carnaval_2026", "progress_shared"), (s) => s.exists() && updateChecks(s.data()));
+            // Listen to weights & progress even before login
+            onSnapshot(doc(db, "carnaval_2026", "weights"), s => s.exists() && updateGlobalRank(s.data(), 'weights'));
+            onSnapshot(doc(db, "carnaval_2026", "progress_shared"), s => s.exists() && updateGlobalRank(s.data(), 'progress'));
+            setInterval(checkNotifications, 60000);
         };
 
-        function updateRanking(d) {
-            const c = (u) => { const s=d[`${u}_start`]||0, l=d[`${u}_last`]||s; return s===0?"--":(l<s?`-${(s-l).toFixed(1)}kg`:`+${(l-s).toFixed(1)}kg`); };
-            document.getElementById('rank-weight-ele').innerText = c('user_ele');
-            document.getElementById('rank-weight-ela').innerText = c('user_ela');
-        }
-        function updateChecks(d) {
-            const c = (u) => d[u]?Object.values(d[u]).filter(v=>v).length:0;
-            // Removed labels from html to keep it clean, but logic remains if needed
+        let globalData = { weights: {}, progress: {} };
+
+        function updateGlobalRank(data, type) {
+            globalData[type] = data;
+            
+            // 1. Calculate Total Checkins
+            const countChecks = (u) => globalData.progress[u] ? Object.values(globalData.progress[u]).filter(v=>v).length : 0;
+            const checksEle = countChecks('user_ele');
+            const checksEla = countChecks('user_ela');
+
+            document.getElementById('total-checks-ele').innerText = checksEle;
+            document.getElementById('total-checks-ela').innerText = checksEla;
+
+            // 2. Calculate Weight Loss
+            const calcLoss = (u) => {
+                const s = globalData.weights[`${u}_start`] || 0;
+                const l = globalData.weights[`${u}_last`] || s;
+                return s===0 ? "--" : (l < s ? `-${(s-l).toFixed(1)}kg` : `+${(l-s).toFixed(1)}kg`);
+            };
+            document.getElementById('weight-loss-ele').innerText = calcLoss('user_ele');
+            document.getElementById('weight-loss-ela').innerText = calcLoss('user_ela');
+
+            // 3. Determine Winner (Based on Checkins)
+            let winner = "Empate";
+            document.getElementById('crown-ele').style.opacity = "0";
+            document.getElementById('crown-ela').style.opacity = "0";
+            
+            if(checksEle > checksEla) { winner = "ELE"; document.getElementById('crown-ele').style.opacity = "1"; }
+            if(checksEla > checksEle) { winner = "ELA"; document.getElementById('crown-ela').style.opacity = "1"; }
+
+            document.getElementById('global-winner-name').innerText = winner;
+
+            // Medals Logic (Simple: Highest gets medal)
+            const setMedal = (id, win) => { document.getElementById(id).className = win ? "fa-solid fa-medal text-yellow-400 text-xs" : "fa-solid fa-medal text-slate-700 text-xs"; };
+            setMedal('medal-checks-ele', checksEle > checksEla);
+            setMedal('medal-checks-ela', checksEla > checksEle);
         }
 
+        // --- AUTH ---
         window.appLogin = async (u) => {
             await signInAnonymously(auth);
             state.user = u;
-            onSnapshot(doc(db, "carnaval_2026", `workouts_${u}`), (s) => { state.workouts = s.data() || {}; renderConfigWorkouts(); renderApp(); });
-            onSnapshot(doc(db, "carnaval_2026", `schedule_${u}`), (s) => { state.schedule = s.data() || {}; state.tempSchedule = JSON.parse(JSON.stringify(state.schedule)); renderApp(); });
-            onSnapshot(doc(db, "carnaval_2026", "progress_shared"), (s) => { state.progress = (s.data()||{})[u] || {}; renderApp(); });
-            onSnapshot(doc(db, "carnaval_2026", "weights"), (s) => { state.weights = s.data() || {}; checkMonday(); });
+            const load = (c, cb) => onSnapshot(doc(db, "carnaval_2026", c), s => cb(s.data() || {}));
+            load(`workouts_${u}`, d => { state.workouts = d; renderConfigWorkouts(); renderApp(); });
+            load(`schedule_${u}`, d => { state.schedule = d; state.tempSchedule = JSON.parse(JSON.stringify(d)); renderApp(); checkNotifications(); });
+            load("progress_shared", d => { state.progress = d[u] || {}; renderApp(); checkNotifications(); });
+            load("weights", d => { state.weights = d; checkMonday(); });
+            
             document.getElementById('login-view').classList.add('hidden');
             document.getElementById('app-view').classList.remove('hidden');
-            addNotif("Login efetuado!");
         };
 
+        // --- RENDER ---
         window.setDate = (d) => { state.date = d; renderApp(); };
-
         function renderApp() {
             const dObj = new Date(state.date+"T12:00:00");
-            document.getElementById('header-date').innerText = dObj.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'}).toUpperCase();
+            document.getElementById('header-date').innerText = dObj.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric'}).toUpperCase();
 
             // Calendar
             const nav = document.getElementById('date-navigator');
-            let html = '';
-            let loop = new Date(); loop.setHours(12,0,0,0);
+            let html = '', loop = new Date(); loop.setHours(12,0,0,0);
             const end = new Date('2026-02-14T12:00:00');
-            while(loop<=end) {
-                const ds = loop.toISOString().split('T')[0];
-                const act = state.date === ds;
-                const cls = act ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/40 scale-100 ring-2 ring-blue-400' : 'bg-slate-800 text-slate-500 hover:bg-slate-700';
-                html += `<button onclick="setDate('${ds}')" class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-16 rounded-xl transition-all ${cls} snap-center"><span class="text-[10px] font-bold uppercase">${loop.toLocaleDateString('pt-BR',{weekday:'short'}).slice(0,3)}</span><span class="text-xl font-black">${loop.getDate()}</span></button>`;
+            while(loop <= end) {
+                const ds = loop.toISOString().split('T')[0], act = state.date === ds;
+                const cls = act ? 'bg-blue-600 text-white shadow-lg ring-1 ring-blue-400 scale-100' : 'bg-slate-800 text-slate-500 opacity-60';
+                html += `<button onclick="setDate('${ds}')" class="flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-xl transition-all ${cls} snap-center"><span class="text-[10px] font-bold uppercase">${loop.toLocaleDateString('pt-BR',{weekday:'short'}).slice(0,3)}</span><span class="text-xl font-black">${loop.getDate()}</span></button>`;
                 loop.setDate(loop.getDate()+1);
             }
             nav.innerHTML = html;
 
-            renderTasks();
-        }
-
-        function renderTasks() {
+            // Tasks
             const dayKey = WEEKDAYS[new Date(state.date+"T12:00:00").getDay()];
             const items = state.schedule[dayKey] || [];
-            items.sort((a,b)=>a.time.localeCompare(b.time));
-
+            items.sort((a,b) => a.time.localeCompare(b.time));
             const list = document.getElementById('tasks-list');
-            let html = '', water=0, checks=0, focus="Descanso";
-
-            items.forEach((item, idx) => {
-                const key = `${state.date}_${item.time}`;
-                const done = state.progress[key] || false;
+            
+            let tHtml='', water=0, checks=0, focus="Descanso";
+            items.forEach((item) => {
+                const k = `${state.date}_${item.time}`, done = state.progress[k];
                 if(done) { checks++; if(item.water) water+=parseInt(item.water); }
                 
-                let title = item.title, desc = item.desc;
+                let title=item.title, desc=item.desc;
                 if(item.type==='workout' && item.workoutId && state.workouts[item.workoutId]) {
-                    title = "TREINO: " + state.workouts[item.workoutId].name;
-                    desc = state.workouts[item.workoutId].desc;
-                    focus = state.workouts[item.workoutId].name;
-                } else if (item.type==='workout') { focus = item.title; }
+                    title = "TREINO: " + state.workouts[item.workoutId].name; desc = state.workouts[item.workoutId].desc; focus = state.workouts[item.workoutId].name;
+                } else if(item.type==='workout') focus = item.title;
 
-                let icon="fa-circle", icls="text-slate-400 border-slate-700";
-                if(item.type==='meal') { icon="fa-utensils"; icls="text-orange-500 border-orange-500/50"; }
-                if(item.type==='workout') { icon="fa-dumbbell"; icls="text-purple-500 border-purple-500/50"; }
-                if(item.type==='water') { icon="fa-glass-water"; icls="text-blue-500 border-blue-500/50"; }
-                if(done) icls="bg-green-500 border-green-500 text-white";
+                let ic="fa-circle", cl="text-slate-500 border-slate-700";
+                if(item.type==='meal') { ic="fa-utensils"; cl="text-orange-500 border-orange-500/30"; }
+                if(item.type==='workout') { ic="fa-dumbbell"; cl="text-purple-500 border-purple-500/30"; }
+                if(item.type==='water') { ic="fa-glass-water"; cl="text-blue-500 border-blue-500/30"; }
+                if(done) cl="bg-green-500 text-white border-green-500";
 
-                html += `<div class="relative pl-10 py-3 group">
-                    <div class="absolute left-0 top-5 w-8 h-8 rounded-full ${icls} border-2 bg-slate-900 flex items-center justify-center z-10 transition-colors"><i class="fa-solid ${icon} text-xs"></i></div>
-                    <div class="bg-slate-800/50 border border-slate-700 hover:border-slate-500 rounded-xl p-3 flex justify-between items-start transition-all ${done?'opacity-50':''}">
+                tHtml += `<div class="relative pl-10 py-3 group">
+                    <div class="absolute left-0 top-5 w-8 h-8 rounded-full ${cl} border-2 bg-slate-900 flex items-center justify-center z-10 transition-all"><i class="fa-solid ${ic} text-xs"></i></div>
+                    <div class="bg-slate-800/50 border border-slate-700 p-3 rounded-xl flex justify-between items-start ${done?'opacity-50 grayscale':''}">
                         <div class="flex-1 cursor-pointer" onclick="toggle('${item.time}')">
-                            <div class="flex items-center gap-2 mb-1"><span class="text-[10px] font-bold bg-slate-900 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">${item.time}</span><h4 class="font-bold text-slate-200 text-sm">${title}</h4></div>
+                            <div class="flex items-center gap-2 mb-1"><span class="text-[10px] bg-slate-900 text-slate-300 px-1 rounded border border-slate-700 font-mono">${item.time}</span><h4 class="font-bold text-slate-200 text-sm">${title}</h4></div>
                             <p class="text-xs text-slate-400 whitespace-pre-line leading-relaxed">${desc}</p>
-                            ${item.water ? `<span class="inline-block mt-2 text-[10px] font-bold text-blue-400 bg-blue-900/30 px-2 py-0.5 rounded border border-blue-500/20">+${item.water}ml</span>` : ''}
+                            ${item.water?`<span class="text-[10px] text-blue-400 font-bold block mt-1">+${item.water}ml</span>`:''}
                         </div>
-                        <div class="flex flex-col gap-2 ml-2">
-                            <button onclick="toggle('${item.time}')" class="w-8 h-8 rounded-lg border border-slate-600 flex items-center justify-center hover:bg-slate-700 ${done?'bg-green-500 border-green-500 text-white':''}"><i class="fa-solid fa-check"></i></button>
-                            <button onclick="openEdit(${idx})" class="w-8 h-8 rounded-lg bg-slate-700 text-slate-400 flex items-center justify-center hover:text-white"><i class="fa-solid fa-pen"></i></button>
-                        </div>
+                        <button onclick="toggle('${item.time}')" class="w-8 h-8 rounded-lg border border-slate-600 flex items-center justify-center ${done?'bg-green-500 text-white border-green-500':''}"><i class="fa-solid fa-check"></i></button>
                     </div></div>`;
             });
-            list.innerHTML = `<div class="timeline-line"></div>` + (html || '<div class="text-center py-10 text-slate-600 italic">Vazio.</div>');
+            list.innerHTML = `<div class="timeline-line"></div>` + (tHtml||'<div class="text-center py-10 text-slate-600 italic">Nada por aqui.</div>');
             
             document.getElementById('water-display').innerText=(water/1000).toFixed(1)+"L";
             document.getElementById('water-bar').style.width=Math.min((water/5000)*100,100)+"%";
-            document.getElementById('daily-pct').innerText=(items.length?Math.round((checks/items.length)*100):0)+"%";
+            document.getElementById('water-pct').innerText=Math.round((water/5000)*100)+"%";
             document.getElementById('focus-pill').innerText = focus;
         }
 
         window.toggle = (t) => {
-            const k=`${state.date}_${t}`, v=!state.progress[k];
-            setDoc(doc(db, "carnaval_2026", "progress_shared"), { [state.user]: { [k]: v } }, { merge: true });
-            if(v) addNotif("Concluído!");
+            const k = `${state.date}_${t}`, v = !state.progress[k];
+            setDoc(doc(db,"carnaval_2026","progress_shared"), {[state.user]:{[k]:v}}, {merge:true});
+            checkNotifications();
         };
 
-        window.addNotif = (m) => {
-            const l=document.getElementById('notif-list'), b=document.getElementById('notif-badge');
-            l.innerHTML = `<div class="p-2 border-b border-slate-700 text-white">${m}</div>` + l.innerHTML;
-            b.classList.remove('hidden');
-        };
-        window.toggleNotifs = () => { document.getElementById('notif-drop').classList.toggle('hidden'); document.getElementById('notif-badge').classList.add('hidden'); };
+        // --- ALERTS ---
+        function checkNotifications() {
+            if(!state.user || !state.schedule) return;
+            const today = new Date().toISOString().split('T')[0], dayKey = WEEKDAYS[new Date().getDay()], items = state.schedule[dayKey] || [], now = new Date(), currentMin = now.getHours()*60 + now.getMinutes();
+            state.alerts = []; let nextTask = null, minDiff = Infinity;
+            items.forEach(i => {
+                const [h,m] = i.time.split(':').map(Number); const taskMin = h*60+m; const done = state.progress[`${today}_${i.time}`];
+                if(!done && currentMin > taskMin+15) state.alerts.push({ msg: `Atrasado: ${i.title}`, time: i.time });
+                if(!done && taskMin > currentMin) { const diff = taskMin - currentMin; if(diff < minDiff) { minDiff = diff; nextTask = i; } }
+            });
+            const list = document.getElementById('notif-list'), badge = document.getElementById('notif-badge'), timer = document.getElementById('next-task-timer');
+            if(nextTask) { const h = Math.floor(minDiff/60), m = minDiff%60; timer.innerText = `Próximo: ${nextTask.title} em ${h>0?h+'h ':''}${m}m`; timer.className = "text-[10px] text-green-400 font-bold animate-pulse"; } else { timer.innerText = "Tudo feito!"; }
+            if(state.alerts.length > 0) {
+                list.innerHTML = state.alerts.map(a => `<div class="p-2 border-b border-slate-700/50 flex gap-2 bg-red-500/10"><i class="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i><div><div class="text-xs font-bold text-red-200">${a.msg}</div><div class="text-[10px] text-red-400">Era às ${a.time}</div></div></div>`).join('');
+                badge.classList.remove('hidden');
+            } else { list.innerHTML = '<div class="p-2 text-center text-xs text-slate-500">Sem alertas.</div>'; badge.classList.add('hidden'); }
+        }
+        window.toggleNotifs = () => document.getElementById('notif-drop').classList.toggle('hidden');
 
+        // --- WEIGHT ---
         function checkMonday() { if(new Date().getDay()===1 && !state.weights[`${state.user}_${new Date().toISOString().split('T')[0]}`]) document.getElementById('weigh-in-modal').classList.remove('hidden'); }
         window.submitWeight = () => {
-            const w=parseFloat(document.getElementById('weight-input').value); if(!w) return;
-            const k=`${state.user}_${new Date().toISOString().split('T')[0]}`, u={[k]:w, [`${state.user}_last`]:w};
-            if(!state.weights[`${state.user}_start`]) u[`${state.user}_start`]=w;
-            setDoc(doc(db,"carnaval_2026","weights"),u,{merge:true});
-            document.getElementById('weigh-in-modal').classList.add('hidden');
+            const w=parseFloat(document.getElementById('weight-input').value); if(!w)return;
+            const k=`${state.user}_${new Date().toISOString().split('T')[0]}`;
+            const updates = { [k]:w, [`${state.user}_last`]:w, [`${state.user}_prev`]: (state.weights[`${state.user}_last`]||w) };
+            if(!state.weights[`${state.user}_start`]) updates[`${state.user}_start`] = w;
+            setDoc(doc(db,"carnaval_2026","weights"),updates,{merge:true}); document.getElementById('weigh-in-modal').classList.add('hidden');
         };
 
         // --- CONFIG ---
@@ -372,107 +421,50 @@
         window.closeConfig = () => document.getElementById('config-view').classList.add('hidden');
         window.switchTab = (t) => {
             document.getElementById('view-workouts').classList.add('hidden'); document.getElementById('view-schedule').classList.add('hidden');
-            document.getElementById('tab-workouts').className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
-            document.getElementById('tab-schedule').className = "flex-1 py-2 text-xs font-bold rounded-md text-slate-400 hover:text-white transition-all";
-            document.getElementById(`view-${t}`).classList.remove('hidden');
-            document.getElementById(`tab-${t}`).className = "flex-1 py-2 text-xs font-bold rounded-md bg-blue-600 text-white shadow transition-all";
+            document.getElementById('tab-workouts').className = "flex-1 py-3 text-xs font-bold rounded-lg text-slate-400"; document.getElementById('tab-schedule').className = "flex-1 py-3 text-xs font-bold rounded-lg text-slate-400";
+            document.getElementById(`view-${t}`).classList.remove('hidden'); document.getElementById(`tab-${t}`).className = "flex-1 py-3 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-lg";
             if(t==='schedule') renderDayPreview();
         };
 
         window.addWorkout = async () => {
-            const n=document.getElementById('new-wk-name').value, d=document.getElementById('new-wk-desc').value;
-            if(!n) return;
-            await setDoc(doc(db,"carnaval_2026",`workouts_${state.user}`), { ...state.workouts, ["wk_"+Date.now()]: {name:n,desc:d} });
-            document.getElementById('new-wk-name').value=""; document.getElementById('new-wk-desc').value="";
-            addNotif("Ficha Criada!");
+            const n=document.getElementById('new-wk-name').value, d=document.getElementById('new-wk-desc').value; if(!n)return;
+            await setDoc(doc(db,"carnaval_2026",`workouts_${state.user}`), {...state.workouts, ["wk_"+Date.now()]:{name:n,desc:d}});
+            document.getElementById('new-wk-name').value=""; document.getElementById('new-wk-desc').value=""; renderConfigWorkouts();
         };
-        window.deleteWorkout = async (id) => {
-            if(!confirm("Apagar?")) return;
-            const n={...state.workouts}; delete n[id];
-            await setDoc(doc(db,"carnaval_2026",`workouts_${state.user}`), n);
-        };
+        window.deleteWorkout = async (id) => { if(confirm("Apagar?")) { const n={...state.workouts}; delete n[id]; await setDoc(doc(db,"carnaval_2026",`workouts_${state.user}`), n); } };
         window.renderConfigWorkouts = () => {
-            let l='', s='<option value="">Escolha a Ficha...</option>';
-            for(let id in state.workouts) {
-                l+=`<div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex justify-between items-center"><div><div class="text-white font-bold text-sm">${state.workouts[id].name}</div></div><button onclick="deleteWorkout('${id}')" class="text-red-500"><i class="fa-solid fa-trash"></i></button></div>`;
-                s+=`<option value="${id}">${state.workouts[id].name}</option>`;
-            }
-            document.getElementById('workouts-list').innerHTML=l; document.getElementById('item-workout-select').innerHTML=s;
+            let h=''; for(let id in state.workouts) h+=`<div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex justify-between"><div><b class="text-white text-xs">${state.workouts[id].name}</b></div><button onclick="deleteWorkout('${id}')" class="text-red-500"><i class="fa-solid fa-trash"></i></button></div>`;
+            document.getElementById('workouts-list').innerHTML=h;
         };
 
-        window.toggleInputType = () => {
-            const t=document.querySelector('input[name="itemType"]:checked').value;
-            if(t==='text'){ document.getElementById('item-title-text').classList.remove('hidden'); document.getElementById('item-desc-text').classList.remove('hidden'); document.getElementById('item-workout-select').classList.add('hidden'); }
-            else { document.getElementById('item-title-text').classList.add('hidden'); document.getElementById('item-desc-text').classList.add('hidden'); document.getElementById('item-workout-select').classList.remove('hidden'); }
-        };
-
-        // --- NEW BULK PARSER (V4.1) ---
         window.parseBulkText = () => {
-            const text = document.getElementById('bulk-text').value;
-            const day = document.getElementById('cfg-day').value;
-            if(!text) return;
-
-            const lines = text.split('\n');
-            const items = [];
-            let currentItem = null;
-
-            lines.forEach(line => {
-                const timeMatch = line.match(/^(\d{2}:\d{2})\s*[:\-\)]?\s*(.*)/);
-                if(timeMatch) {
-                    if(currentItem) items.push(currentItem); // push prev
-                    
-                    let raw = timeMatch[2].trim();
-                    let type = 'system';
-                    if(raw.match(/Café|Almoço|Jantar|Ovo|Comer/i)) type = 'meal';
-                    if(raw.match(/Água|Hidrata/i)) type = 'water';
-                    if(raw.match(/Treino|Cardio|Gym/i)) type = 'workout';
-                    
-                    let water = 0;
-                    const wm = raw.match(/(\d+)\s?ml/i);
-                    if(wm) water = parseInt(wm[1]);
-
-                    currentItem = {
-                        time: timeMatch[1],
-                        title: raw.split(':')[0] || "Rotina",
-                        desc: raw,
-                        type: type,
-                        water: water
-                    };
-                } else if(currentItem && line.trim().length > 0) {
-                    currentItem.desc += '\n' + line.trim();
-                }
+            const text = document.getElementById('bulk-text').value, day = document.getElementById('cfg-day').value;
+            const lines = text.split('\n'), items = []; let cur = null;
+            lines.forEach(l => {
+                const m = l.match(/^(\d{2}:\d{2})\s*[:\-\)]?\s*(.*)/);
+                if(m) {
+                    if(cur) items.push(cur);
+                    let raw=m[2], type='system', w=0, wm=raw.match(/(\d+)\s?ml/i);
+                    if(raw.match(/Café|Almoço|Jantar|Ovo/i)) type='meal'; if(raw.match(/Água|Hidrata/i)) type='water'; if(raw.match(/Treino|Cardio/i)) type='workout';
+                    if(wm) w=parseInt(wm[1]);
+                    cur={time:m[1], title:raw.split(':')[0], desc:raw, type, water:w};
+                } else if(cur && l.trim()) cur.desc+='\n'+l.trim();
             });
-            if(currentItem) items.push(currentItem);
-
-            if(!state.tempSchedule[day]) state.tempSchedule[day] = [];
-            state.tempSchedule[day] = [...state.tempSchedule[day], ...items];
-            renderDayPreview();
-            document.getElementById('bulk-text').value = "";
-            addNotif("Texto processado!");
+            if(cur) items.push(cur);
+            state.tempSchedule[day] = [...(state.tempSchedule[day]||[]), ...items];
+            renderDayPreview(); document.getElementById('bulk-text').value="";
         };
-
-        window.addItemToSchedule = () => {
-            const d=document.getElementById('cfg-day').value, t=document.getElementById('item-time').value, type=document.querySelector('input[name="itemType"]:checked').value;
-            if(!t) return;
-            let n={time:t, type:'system', title:'', desc:'', water:0};
-            if(type==='workout') { n.type='workout'; n.workoutId=document.getElementById('item-workout-select').value; if(!n.workoutId)return; n.title="TREINO"; }
-            else { n.title=document.getElementById('item-title-text').value; n.desc=document.getElementById('item-desc-text').value; if(n.title.match(/Café|Almoço/i))n.type='meal'; if(n.title.match(/Água/i))n.type='water'; }
-            if(!state.tempSchedule[d]) state.tempSchedule[d]=[]; state.tempSchedule[d].push(n); renderDayPreview();
-        };
-        window.removeItemSchedule = (i) => { state.tempSchedule[document.getElementById('cfg-day').value].splice(i,1); renderDayPreview(); };
         window.renderDayPreview = () => {
             const d=document.getElementById('cfg-day').value, l=document.getElementById('day-preview-list');
             const i=state.tempSchedule[d]||[]; i.sort((a,b)=>a.time.localeCompare(b.time));
-            let h=''; i.forEach((it,idx)=>{ h+=`<div class="flex justify-between items-center bg-slate-800 p-2 rounded border border-slate-700 text-xs text-white"><span><b class="text-blue-400 mr-2">${it.time}</b> ${it.workoutId?'Treino Linkado':it.title}</span><button onclick="removeItemSchedule(${idx})" class="text-red-500"><i class="fa-solid fa-times"></i></button></div>`; });
-            l.innerHTML=h||'<div class="text-slate-600 text-xs">Vazio.</div>';
+            let h=''; i.forEach((it,x)=> h+=`<div class="bg-slate-800 p-2 rounded border border-slate-700 text-xs text-white flex justify-between"><span><b class="text-blue-400">${it.time}</b> ${it.title}</span><button onclick="rmItem(${x})" class="text-red-500">X</button></div>`);
+            l.innerHTML=h||'<div class="text-slate-500 text-xs">Vazio.</div>';
         };
+        window.rmItem=(x)=>{ state.tempSchedule[document.getElementById('cfg-day').value].splice(x,1); renderDayPreview(); };
         window.saveConfigChanges = async () => {
             await setDoc(doc(db,"carnaval_2026",`schedule_${state.user}`), state.tempSchedule);
-            state.schedule=JSON.parse(JSON.stringify(state.tempSchedule)); addNotif("Salvo!"); closeConfig(); renderApp();
+            state.schedule=JSON.parse(JSON.stringify(state.tempSchedule)); closeConfig(); renderApp();
         };
-
-        window.openEdit = (idx) => { const k=WEEKDAYS[new Date(state.date+"T12:00:00").getDay()]; const i=state.schedule[k][idx]; document.getElementById('edit-idx').value=idx; document.getElementById('edit-title').value=i.title; document.getElementById('edit-desc').value=i.desc||""; document.getElementById('edit-time').value=i.time; document.getElementById('edit-water').value=i.water||""; document.getElementById('edit-modal').classList.remove('hidden'); };
-        window.saveEdit = async () => { const k=WEEKDAYS[new Date(state.date+"T12:00:00").getDay()]; const i=[...state.schedule[k]]; const idx=document.getElementById('edit-idx').value; i[idx]={...i[idx], title:document.getElementById('edit-title').value, desc:document.getElementById('edit-desc').value, time:document.getElementById('edit-time').value, water:parseInt(document.getElementById('edit-water').value)||0}; await setDoc(doc(db,"carnaval_2026",`schedule_${state.user}`), {[k]:i}, {merge:true}); document.getElementById('edit-modal').classList.add('hidden'); addNotif("Editado!"); };
     </script>
 </body>
 </html>
