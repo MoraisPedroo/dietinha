@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Project 2026 - Elite Mobile</title>
+    <title>Project 2026 - Elite V8</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -14,29 +14,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* Mobile First Optimizations */
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        
-        /* Smooth Scroll & Hidden Scrollbars */
         .timeline-scroll::-webkit-scrollbar { height: 0px; background: transparent; }
         .timeline-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Glass & Neon Effects */
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
         .timeline-line { position: absolute; left: 27px; top: 20px; bottom: 0; width: 2px; background: linear-gradient(to bottom, #3b82f6, #0f172a); z-index: 0; }
-        
-        /* Animation Classes */
         @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
         .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
-        .winner-glow { animation: pulse-gold 2s infinite; border-color: #eab308 !important; }
-
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Floating Action Button */
+        .fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); z-index: 40; transition: transform 0.2s; }
+        .fab:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="overflow-x-hidden selection:bg-blue-500 selection:text-white">
@@ -49,16 +40,14 @@
         </div>
 
         <div class="relative z-10 w-full max-w-md flex flex-col gap-6">
-            
             <div class="text-center">
                 <h1 class="text-5xl font-black italic tracking-tighter text-white mb-1">PROJECT <span class="text-blue-500">2026</span></h1>
-                <p class="text-slate-400 text-[10px] font-bold tracking-[0.2em] uppercase">Elite Performance Tracker</p>
+                <p class="text-slate-400 text-[10px] font-bold tracking-[0.2em] uppercase">V8.0 Ultimate Tracker</p>
             </div>
 
             <div class="glass rounded-2xl p-1 shadow-2xl overflow-hidden ring-1 ring-white/10">
-                
                 <div id="winner-banner" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-3 text-center border-b border-white/5">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Líder Geral do Desafio</div>
+                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Líder Supremo (Geral)</div>
                     <div class="flex items-center justify-center gap-2">
                         <i class="fa-solid fa-crown text-yellow-400 text-lg animate-bounce"></i>
                         <span class="text-xl font-black text-white tracking-wide" id="global-winner-name">CALCULANDO...</span>
@@ -66,68 +55,65 @@
                 </div>
 
                 <div class="p-4 grid grid-cols-2 gap-4 divide-x divide-white/10 relative">
-                    <div class="text-center relative group">
-                        <div id="crown-ele" class="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl opacity-0 transition-opacity">👑</div>
-                        
+                    <div class="text-center relative">
                         <div class="flex items-center justify-center gap-2 mb-3">
                             <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa-solid fa-mars"></i></div>
                             <span class="font-black text-white text-lg">ELE</span>
                         </div>
-                        
-                        <div class="space-y-3">
-                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
-                                <div class="text-[9px] text-slate-400 uppercase">Total Checkins</div>
-                                <div class="text-xl font-bold text-blue-400" id="total-checks-ele">0</div>
-                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-checks-ele"></i>
+                        <div class="space-y-2">
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5 grid grid-cols-2 gap-1">
+                                <div>
+                                    <div class="text-[8px] text-slate-400 uppercase">Hoje</div>
+                                    <div class="text-lg font-bold text-green-400" id="today-ele">0</div>
+                                </div>
+                                <div>
+                                    <div class="text-[8px] text-slate-400 uppercase">Geral</div>
+                                    <div class="text-lg font-bold text-blue-400" id="total-ele">0</div>
+                                </div>
                             </div>
                             <div class="bg-slate-800/50 rounded p-2 border border-white/5">
-                                <div class="text-[9px] text-slate-400 uppercase">Peso Perdido</div>
-                                <div class="text-sm font-bold text-white" id="weight-loss-ele">--</div>
-                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-weight-ele"></i>
+                                <div class="text-[9px] text-slate-400 uppercase">Histórico Peso</div>
+                                <div class="text-[10px] font-mono text-blue-300 overflow-x-auto whitespace-nowrap p-1" id="history-ele">--</div>
+                                <div class="text-xs font-bold text-white mt-1" id="current-weight-ele">--</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center relative">
-                        <div id="crown-ela" class="absolute -top-6 left-1/2 -translate-x-1/2 text-2xl opacity-0 transition-opacity">👑</div>
-
                         <div class="flex items-center justify-center gap-2 mb-3">
                             <div class="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center text-rose-400"><i class="fa-solid fa-venus"></i></div>
                             <span class="font-black text-white text-lg">ELA</span>
                         </div>
-                        
-                        <div class="space-y-3">
-                            <div class="bg-slate-800/50 rounded p-2 border border-white/5">
-                                <div class="text-[9px] text-slate-400 uppercase">Total Checkins</div>
-                                <div class="text-xl font-bold text-rose-400" id="total-checks-ela">0</div>
-                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-checks-ela"></i>
+                        <div class="space-y-2">
+                            <div class="bg-slate-800/50 rounded p-2 border border-white/5 grid grid-cols-2 gap-1">
+                                <div>
+                                    <div class="text-[8px] text-slate-400 uppercase">Hoje</div>
+                                    <div class="text-lg font-bold text-green-400" id="today-ela">0</div>
+                                </div>
+                                <div>
+                                    <div class="text-[8px] text-slate-400 uppercase">Geral</div>
+                                    <div class="text-lg font-bold text-rose-400" id="total-ela">0</div>
+                                </div>
                             </div>
                             <div class="bg-slate-800/50 rounded p-2 border border-white/5">
-                                <div class="text-[9px] text-slate-400 uppercase">Peso Perdido</div>
-                                <div class="text-sm font-bold text-white" id="weight-loss-ela">--</div>
-                                <i class="fa-solid fa-medal text-slate-700 text-xs" id="medal-weight-ela"></i>
+                                <div class="text-[9px] text-slate-400 uppercase">Histórico Peso</div>
+                                <div class="text-[10px] font-mono text-rose-300 overflow-x-auto whitespace-nowrap p-1" id="history-ela">--</div>
+                                <div class="text-xs font-bold text-white mt-1" id="current-weight-ela">--</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="bg-slate-900/50 p-2 text-center border-t border-white/5">
-                    <p class="text-[10px] text-slate-500">🏆 O Líder é definido pelo total de tarefas cumpridas.</p>
-                </div>
             </div>
 
             <div class="flex flex-col gap-3">
-                <button onclick="window.appLogin('user_ele')" class="w-full bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-900/50 flex items-center justify-center gap-3 transition-transform active:scale-95">
-                    <i class="fa-solid fa-mars text-lg"></i>
-                    <span>ENTRAR COMO ELE</span>
+                <button onclick="window.appLogin('user_ele')" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold shadow-lg flex items-center justify-center gap-3 transition-transform active:scale-95">
+                    <i class="fa-solid fa-mars text-lg"></i><span>ENTRAR ELE</span>
                 </button>
-                <button onclick="window.appLogin('user_ela')" class="w-full bg-gradient-to-r from-rose-700 to-rose-600 hover:from-rose-600 hover:to-rose-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-rose-900/50 flex items-center justify-center gap-3 transition-transform active:scale-95">
-                    <i class="fa-solid fa-venus text-lg"></i>
-                    <span>ENTRAR COMO ELA</span>
+                <button onclick="window.appLogin('user_ela')" class="w-full bg-rose-600 hover:bg-rose-500 text-white p-4 rounded-xl font-bold shadow-lg flex items-center justify-center gap-3 transition-transform active:scale-95">
+                    <i class="fa-solid fa-venus text-lg"></i><span>ENTRAR ELA</span>
                 </button>
             </div>
-            
-            <p id="login-status" class="text-center text-[10px] text-slate-600 font-mono">Mobile Elite V6.0 • Ready</p>
+            <p id="login-status" class="text-center text-[10px] text-slate-600 font-mono">Syncing Database...</p>
         </div>
     </div>
 
@@ -141,7 +127,6 @@
                         </div>
                         <h1 class="text-2xl font-black italic text-white" id="header-date">HOJE</h1>
                     </div>
-                    
                     <div class="flex gap-3">
                         <div class="relative">
                             <button onclick="toggleNotifs()" class="relative w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all active:scale-95">
@@ -149,17 +134,11 @@
                                 <div id="notif-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-slate-900"></div>
                             </button>
                             <div id="notif-drop" class="hidden absolute right-0 top-14 w-72 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden">
-                                <div class="bg-slate-900 p-3 border-b border-slate-700 flex justify-between items-center">
-                                    <span class="text-xs font-bold text-white">Alertas</span>
-                                    <span class="text-[10px] text-slate-500 animate-pulse" id="next-task-timer">...</span>
-                                </div>
+                                <div class="bg-slate-900 p-3 border-b border-slate-700 flex justify-between items-center"><span class="text-xs font-bold text-white">Alertas</span><span class="text-[10px] text-slate-500 animate-pulse" id="next-task-timer">...</span></div>
                                 <div id="notif-list" class="max-h-60 overflow-y-auto p-1 space-y-1"></div>
                             </div>
                         </div>
-
-                        <button onclick="openConfig()" class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/20 active:scale-95">
-                            <i class="fa-solid fa-sliders"></i>
-                        </button>
+                        <button onclick="openConfig()" class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/20 active:scale-95"><i class="fa-solid fa-sliders"></i></button>
                     </div>
                 </div>
 
@@ -175,9 +154,7 @@
                             <div class="text-[10px] text-blue-200" id="water-pct">0%</div>
                         </div>
                     </div>
-                    <div class="w-full bg-black/20 h-2 rounded-full mt-3 overflow-hidden">
-                        <div id="water-bar" class="h-full bg-white w-0 transition-all duration-700 ease-out shadow-[0_0_10px_white]"></div>
-                    </div>
+                    <div class="w-full bg-black/20 h-2 rounded-full mt-3 overflow-hidden"><div id="water-bar" class="h-full bg-white w-0 transition-all duration-700 ease-out shadow-[0_0_10px_white]"></div></div>
                 </div>
 
                 <div class="border-t border-slate-800/50 pt-2">
@@ -197,41 +174,66 @@
                 </div>
             </div>
         </div>
+
+        <button onclick="openQuickAdd()" class="fab bg-blue-600 text-white hover:bg-blue-500 shadow-blue-500/30">
+            <i class="fa-solid fa-plus text-2xl"></i>
+        </button>
+    </div>
+
+    <div id="quick-add-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-white font-bold"><i class="fa-solid fa-bolt text-yellow-400 mr-2"></i>Tarefa Rápida</h3>
+                <button onclick="document.getElementById('quick-add-modal').classList.add('hidden')" class="text-slate-400"><i class="fa-solid fa-times"></i></button>
+            </div>
+            
+            <div class="space-y-3 mb-6">
+                <div class="flex gap-2">
+                    <input type="time" id="qa-time" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-3 w-1/3">
+                    <input type="text" id="qa-title" placeholder="O que fazer?" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-3 flex-1">
+                </div>
+                <input type="number" id="qa-water" placeholder="Água (ml) opcional" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="saveQuickTask('today')" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-xs">
+                    Adicionar Só Hoje
+                </button>
+                <button onclick="saveQuickTask('all')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs">
+                    Todos os Dias
+                </button>
+            </div>
+        </div>
     </div>
 
     <div id="config-view" class="hidden fixed inset-0 z-50 bg-slate-900 overflow-y-auto">
         <div class="max-w-md mx-auto min-h-screen bg-slate-900">
-            <div class="sticky top-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 p-4 flex justify-between items-center z-50 shadow-md">
-                <button onclick="closeConfig()" class="text-slate-400 flex items-center text-sm font-bold"><i class="fa-solid fa-chevron-left mr-2"></i>Voltar</button>
+            <div class="sticky top-0 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 p-4 flex justify-between items-center z-50">
+                <button onclick="closeConfig()" class="text-slate-400 font-bold"><i class="fa-solid fa-arrow-left mr-2"></i>Voltar</button>
                 <h2 class="font-bold text-white">Configurar</h2>
                 <button onclick="saveConfigChanges()" class="text-green-400 font-bold text-sm bg-green-400/10 px-3 py-1 rounded-lg">Salvar</button>
             </div>
-            
             <div class="p-4 pb-20">
                 <div class="flex p-1 bg-slate-800 rounded-xl mb-6">
                     <button onclick="switchTab('workouts')" id="tab-workouts" class="flex-1 py-3 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-lg">1. Treinos</button>
                     <button onclick="switchTab('schedule')" id="tab-schedule" class="flex-1 py-3 text-xs font-bold rounded-lg text-slate-400">2. Agenda</button>
                 </div>
-
                 <div id="view-workouts" class="animate-fadeIn space-y-4">
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Novo Treino</label>
-                        <input type="text" id="new-wk-name" placeholder="Nome (Ex: Treino A)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm mb-2 focus:border-blue-500 outline-none">
-                        <textarea id="new-wk-desc" placeholder="Exercícios..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm h-24 mb-3 focus:border-blue-500 outline-none"></textarea>
-                        <button onclick="addWorkout()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg active:scale-95 transition-transform">Adicionar Ficha</button>
+                        <input type="text" id="new-wk-name" placeholder="Nome (Ex: Treino A)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm mb-2">
+                        <textarea id="new-wk-desc" placeholder="Exercícios..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm h-24 mb-3"></textarea>
+                        <button onclick="addWorkout()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg">Adicionar Ficha</button>
                     </div>
                     <div id="workouts-list" class="space-y-2"></div>
                 </div>
-
                 <div id="view-schedule" class="hidden animate-fadeIn space-y-4">
                     <select id="cfg-day" onchange="renderDayPreview()" class="w-full bg-slate-800 border border-slate-700 text-white p-3 rounded-xl font-bold mb-2 outline-none appearance-none"><option value="monday">Segunda-Feira</option><option value="tuesday">Terça-Feira</option><option value="wednesday">Quarta-Feira</option><option value="thursday">Quinta-Feira</option><option value="friday">Sexta-Feira</option><option value="saturday">Sábado</option><option value="sunday">Domingo</option></select>
-                    
                     <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
-                        <h4 class="text-blue-400 text-xs font-bold uppercase mb-3"><i class="fa-solid fa-paste mr-2"></i>Importação Rápida (Texto)</h4>
+                        <h4 class="text-blue-400 text-xs font-bold uppercase mb-3"><i class="fa-solid fa-paste mr-2"></i>Importação Rápida</h4>
                         <textarea id="bulk-text" placeholder="Cole aqui... Ex: 07:00 Café: Ovos..." class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 text-xs h-32 font-mono mb-3 leading-relaxed"></textarea>
                         <button onclick="parseBulkText()" class="w-full bg-slate-700 text-white font-bold py-3 rounded-lg text-xs hover:bg-slate-600">Processar Texto</button>
                     </div>
-                    
                     <div class="text-slate-500 text-[10px] font-bold uppercase mt-4 mb-2">Itens Atuais</div>
                     <div id="day-preview-list" class="space-y-2"></div>
                 </div>
@@ -241,11 +243,9 @@
 
     <div id="weigh-in-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm p-6">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-8 text-center shadow-2xl">
-            <div class="w-16 h-16 bg-orange-500/20 text-orange-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce"><i class="fa-solid fa-weight-scale"></i></div>
             <h2 class="text-2xl font-black text-white mb-2">Segundou!</h2>
-            <p class="text-slate-400 text-sm mb-6">Hora da verdade. Registre seu peso.</p>
             <input type="number" id="weight-input" step="0.1" placeholder="00.0" class="w-full text-center text-5xl font-black text-white bg-transparent border-b-2 border-slate-600 focus:border-orange-500 outline-none py-2 mb-8 placeholder:text-slate-700">
-            <button onclick="submitWeight()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl text-lg transition-transform active:scale-95">Confirmar Peso</button>
+            <button onclick="submitWeight()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl text-lg">Confirmar</button>
         </div>
     </div>
 
@@ -262,9 +262,16 @@
         const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         const state = { user: null, date: new Date().toISOString().split('T')[0], schedule: {}, workouts: {}, progress: {}, weights: {}, tempSchedule: {}, alerts: [] };
 
-        // --- GLOBAL STATS (RANKING) ---
+        // AUTO WATER PROTOCOL
+        const AUTO_WATER_PROTOCOL = [
+            { time: "07:15", title: "Hidratação Matinal", desc: "Comece o dia ativando.", water: 600, type: 'water', auto: true },
+            { time: "10:00", title: "Hidratação Focada", desc: "Manter o fluxo.", water: 800, type: 'water', auto: true },
+            { time: "14:30", title: "Hidratação Tarde", desc: "Energia pós-almoço.", water: 800, type: 'water', auto: true },
+            { time: "17:30", title: "Pré-Treino", desc: "Preparo muscular.", water: 800, type: 'water', auto: true },
+            { time: "22:00", title: "Hidratação Noturna", desc: "Sem exageros.", water: 500, type: 'water', auto: true }
+        ];
+
         window.onload = () => {
-            // Listen to weights & progress even before login
             onSnapshot(doc(db, "carnaval_2026", "weights"), s => s.exists() && updateGlobalRank(s.data(), 'weights'));
             onSnapshot(doc(db, "carnaval_2026", "progress_shared"), s => s.exists() && updateGlobalRank(s.data(), 'progress'));
             setInterval(checkNotifications, 60000);
@@ -272,66 +279,57 @@
 
         let globalData = { weights: {}, progress: {} };
 
+        // --- RANKING LOGIC (DAILY vs TOTAL) ---
         function updateGlobalRank(data, type) {
             globalData[type] = data;
-            
-            // 1. Calculate Total Checkins
-            const countChecks = (u) => globalData.progress[u] ? Object.values(globalData.progress[u]).filter(v=>v).length : 0;
-            const checksEle = countChecks('user_ele');
-            const checksEla = countChecks('user_ela');
+            const todayKey = new Date().toISOString().split('T')[0];
 
-            document.getElementById('total-checks-ele').innerText = checksEle;
-            document.getElementById('total-checks-ela').innerText = checksEla;
-
-            // 2. Calculate Weight Loss
-            const calcLoss = (u) => {
-                const s = globalData.weights[`${u}_start`] || 0;
-                const l = globalData.weights[`${u}_last`] || s;
-                return s===0 ? "--" : (l < s ? `-${(s-l).toFixed(1)}kg` : `+${(l-s).toFixed(1)}kg`);
+            // Checkins Calculation
+            const calcChecks = (u, mode) => {
+                if(!globalData.progress[u]) return 0;
+                const keys = Object.keys(globalData.progress[u]).filter(k => globalData.progress[u][k]);
+                if(mode==='total') return keys.length;
+                if(mode==='today') return keys.filter(k => k.startsWith(todayKey)).length;
+                return 0;
             };
-            document.getElementById('weight-loss-ele').innerText = calcLoss('user_ele');
-            document.getElementById('weight-loss-ela').innerText = calcLoss('user_ela');
 
-            // 3. Determine Winner (Based on Checkins)
-            let winner = "Empate";
-            document.getElementById('crown-ele').style.opacity = "0";
-            document.getElementById('crown-ela').style.opacity = "0";
-            
-            if(checksEle > checksEla) { winner = "ELE"; document.getElementById('crown-ele').style.opacity = "1"; }
-            if(checksEla > checksEle) { winner = "ELA"; document.getElementById('crown-ela').style.opacity = "1"; }
+            const tEle = calcChecks('user_ele', 'total'), dEle = calcChecks('user_ele', 'today');
+            const tEla = calcChecks('user_ela', 'total'), dEla = calcChecks('user_ela', 'today');
 
-            document.getElementById('global-winner-name').innerText = winner;
+            document.getElementById('total-ele').innerText = tEle; document.getElementById('today-ele').innerText = dEle;
+            document.getElementById('total-ela').innerText = tEla; document.getElementById('today-ela').innerText = dEla;
+            document.getElementById('global-winner-name').innerText = tEle > tEla ? "ELE" : (tEla > tEle ? "ELA" : "EMPATE");
 
-            // Medals Logic (Simple: Highest gets medal)
-            const setMedal = (id, win) => { document.getElementById(id).className = win ? "fa-solid fa-medal text-yellow-400 text-xs" : "fa-solid fa-medal text-slate-700 text-xs"; };
-            setMedal('medal-checks-ele', checksEle > checksEla);
-            setMedal('medal-checks-ela', checksEla > checksEle);
+            // Weight History
+            const updW = (u, hId, cId) => {
+                const keys = Object.keys(globalData.weights).filter(k => k.startsWith(u + '_20')).sort();
+                const hist = keys.slice(-4).map(k => globalData.weights[k]);
+                document.getElementById(hId).innerText = hist.length ? hist.join(' ➔ ') : "--";
+                document.getElementById(cId).innerText = (globalData.weights[`${u}_last`]||"--") + " Kg Atual";
+            };
+            updW('user_ele', 'history-ele', 'current-weight-ele');
+            updW('user_ela', 'history-ela', 'current-weight-ela');
         }
 
-        // --- AUTH ---
         window.appLogin = async (u) => {
             await signInAnonymously(auth);
             state.user = u;
-            const load = (c, cb) => onSnapshot(doc(db, "carnaval_2026", c), s => cb(s.data() || {}));
-            load(`workouts_${u}`, d => { state.workouts = d; renderConfigWorkouts(); renderApp(); });
-            load(`schedule_${u}`, d => { state.schedule = d; state.tempSchedule = JSON.parse(JSON.stringify(d)); renderApp(); checkNotifications(); });
-            load("progress_shared", d => { state.progress = d[u] || {}; renderApp(); checkNotifications(); });
-            load("weights", d => { state.weights = d; checkMonday(); });
-            
+            onSnapshot(doc(db, "carnaval_2026", `workouts_${u}`), d => { state.workouts = d.data()||{}; renderConfigWorkouts(); renderApp(); });
+            onSnapshot(doc(db, "carnaval_2026", `schedule_${u}`), d => { state.schedule = d.data()||{}; state.tempSchedule = JSON.parse(JSON.stringify(state.schedule)); renderApp(); checkNotifications(); });
+            onSnapshot(doc(db, "carnaval_2026", "progress_shared"), d => { state.progress = (d.data()||{})[u] || {}; renderApp(); checkNotifications(); });
+            onSnapshot(doc(db, "carnaval_2026", "weights"), d => { state.weights = d.data()||{}; checkMonday(); });
             document.getElementById('login-view').classList.add('hidden');
             document.getElementById('app-view').classList.remove('hidden');
         };
 
-        // --- RENDER ---
         window.setDate = (d) => { state.date = d; renderApp(); };
         function renderApp() {
             const dObj = new Date(state.date+"T12:00:00");
             document.getElementById('header-date').innerText = dObj.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric'}).toUpperCase();
-
+            
             // Calendar
-            const nav = document.getElementById('date-navigator');
-            let html = '', loop = new Date(); loop.setHours(12,0,0,0);
-            const end = new Date('2026-02-14T12:00:00');
+            const nav = document.getElementById('date-navigator'), start = new Date(), end = new Date('2026-02-14T12:00:00');
+            let html = '', loop = new Date(start); loop.setHours(12,0,0,0);
             while(loop <= end) {
                 const ds = loop.toISOString().split('T')[0], act = state.date === ds;
                 const cls = act ? 'bg-blue-600 text-white shadow-lg ring-1 ring-blue-400 scale-100' : 'bg-slate-800 text-slate-500 opacity-60';
@@ -340,21 +338,21 @@
             }
             nav.innerHTML = html;
 
-            // Tasks
+            // Merge Schedule
             const dayKey = WEEKDAYS[new Date(state.date+"T12:00:00").getDay()];
-            const items = state.schedule[dayKey] || [];
+            let items = [...(state.schedule[dayKey] || [])];
+            AUTO_WATER_PROTOCOL.forEach(w => { if(!items.some(i => i.time === w.time)) items.push(w); });
             items.sort((a,b) => a.time.localeCompare(b.time));
+
             const list = document.getElementById('tasks-list');
-            
             let tHtml='', water=0, checks=0, focus="Descanso";
+            
             items.forEach((item) => {
                 const k = `${state.date}_${item.time}`, done = state.progress[k];
                 if(done) { checks++; if(item.water) water+=parseInt(item.water); }
-                
                 let title=item.title, desc=item.desc;
-                if(item.type==='workout' && item.workoutId && state.workouts[item.workoutId]) {
-                    title = "TREINO: " + state.workouts[item.workoutId].name; desc = state.workouts[item.workoutId].desc; focus = state.workouts[item.workoutId].name;
-                } else if(item.type==='workout') focus = item.title;
+                if(item.type==='workout' && item.workoutId && state.workouts[item.workoutId]) { title = "TREINO: " + state.workouts[item.workoutId].name; desc = state.workouts[item.workoutId].desc; focus = state.workouts[item.workoutId].name; }
+                else if(item.type==='workout') focus = item.title;
 
                 let ic="fa-circle", cl="text-slate-500 border-slate-700";
                 if(item.type==='meal') { ic="fa-utensils"; cl="text-orange-500 border-orange-500/30"; }
@@ -367,14 +365,13 @@
                     <div class="bg-slate-800/50 border border-slate-700 p-3 rounded-xl flex justify-between items-start ${done?'opacity-50 grayscale':''}">
                         <div class="flex-1 cursor-pointer" onclick="toggle('${item.time}')">
                             <div class="flex items-center gap-2 mb-1"><span class="text-[10px] bg-slate-900 text-slate-300 px-1 rounded border border-slate-700 font-mono">${item.time}</span><h4 class="font-bold text-slate-200 text-sm">${title}</h4></div>
-                            <p class="text-xs text-slate-400 whitespace-pre-line leading-relaxed">${desc}</p>
+                            <p class="text-xs text-slate-400 whitespace-pre-line">${desc}</p>
                             ${item.water?`<span class="text-[10px] text-blue-400 font-bold block mt-1">+${item.water}ml</span>`:''}
                         </div>
                         <button onclick="toggle('${item.time}')" class="w-8 h-8 rounded-lg border border-slate-600 flex items-center justify-center ${done?'bg-green-500 text-white border-green-500':''}"><i class="fa-solid fa-check"></i></button>
                     </div></div>`;
             });
-            list.innerHTML = `<div class="timeline-line"></div>` + (tHtml||'<div class="text-center py-10 text-slate-600 italic">Nada por aqui.</div>');
-            
+            list.innerHTML = `<div class="timeline-line"></div>` + (tHtml||'<div class="text-center py-10 text-slate-600 italic">Vazio.</div>');
             document.getElementById('water-display').innerText=(water/1000).toFixed(1)+"L";
             document.getElementById('water-bar').style.width=Math.min((water/5000)*100,100)+"%";
             document.getElementById('water-pct').innerText=Math.round((water/5000)*100)+"%";
@@ -387,10 +384,51 @@
             checkNotifications();
         };
 
-        // --- ALERTS ---
+        // --- NEW FEATURE: QUICK ADD TASK ---
+        window.openQuickAdd = () => { 
+            const now = new Date();
+            document.getElementById('qa-time').value = now.toTimeString().substring(0,5);
+            document.getElementById('quick-add-modal').classList.remove('hidden'); 
+        };
+        
+        window.saveQuickTask = async (mode) => {
+            const time = document.getElementById('qa-time').value;
+            const title = document.getElementById('qa-title').value;
+            const water = parseInt(document.getElementById('qa-water').value) || 0;
+            
+            if(!time || !title) return alert("Preencha horário e título");
+
+            let type = 'system';
+            if(title.match(/água/i)) type = 'water';
+            else if(title.match(/comer|dieta/i)) type = 'meal';
+
+            const newItem = { time, title, desc: 'Tarefa Rápida', type, water };
+            const currentDay = WEEKDAYS[new Date().getDay()];
+            let newSchedule = { ...state.schedule };
+
+            if(mode === 'today') {
+                if(!newSchedule[currentDay]) newSchedule[currentDay] = [];
+                newSchedule[currentDay].push(newItem);
+            } else {
+                WEEKDAYS.forEach(d => {
+                    if(!newSchedule[d]) newSchedule[d] = [];
+                    newSchedule[d].push(newItem);
+                });
+            }
+
+            await setDoc(doc(db, "carnaval_2026", `schedule_${state.user}`), newSchedule);
+            document.getElementById('quick-add-modal').classList.add('hidden');
+            document.getElementById('qa-title').value = '';
+            // Force reload local if needed, snapshot will handle it though
+        };
+
+        // --- ALERTS & WEIGHT ---
         function checkNotifications() {
             if(!state.user || !state.schedule) return;
-            const today = new Date().toISOString().split('T')[0], dayKey = WEEKDAYS[new Date().getDay()], items = state.schedule[dayKey] || [], now = new Date(), currentMin = now.getHours()*60 + now.getMinutes();
+            const today = new Date().toISOString().split('T')[0], dayKey = WEEKDAYS[new Date().getDay()];
+            let items = [...(state.schedule[dayKey] || [])];
+            AUTO_WATER_PROTOCOL.forEach(w => { if(!items.some(i => i.time === w.time)) items.push(w); });
+            const now = new Date(), currentMin = now.getHours()*60 + now.getMinutes();
             state.alerts = []; let nextTask = null, minDiff = Infinity;
             items.forEach(i => {
                 const [h,m] = i.time.split(':').map(Number); const taskMin = h*60+m; const done = state.progress[`${today}_${i.time}`];
@@ -398,7 +436,7 @@
                 if(!done && taskMin > currentMin) { const diff = taskMin - currentMin; if(diff < minDiff) { minDiff = diff; nextTask = i; } }
             });
             const list = document.getElementById('notif-list'), badge = document.getElementById('notif-badge'), timer = document.getElementById('next-task-timer');
-            if(nextTask) { const h = Math.floor(minDiff/60), m = minDiff%60; timer.innerText = `Próximo: ${nextTask.title} em ${h>0?h+'h ':''}${m}m`; timer.className = "text-[10px] text-green-400 font-bold animate-pulse"; } else { timer.innerText = "Tudo feito!"; }
+            if(nextTask) { const h = Math.floor(minDiff/60), m = minDiff%60; timer.innerText = `Próx: ${nextTask.title} (${h>0?h+'h ':''}${m}m)`; timer.className = "text-[10px] text-green-400 font-bold animate-pulse"; } else { timer.innerText = "Tudo feito!"; }
             if(state.alerts.length > 0) {
                 list.innerHTML = state.alerts.map(a => `<div class="p-2 border-b border-slate-700/50 flex gap-2 bg-red-500/10"><i class="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i><div><div class="text-xs font-bold text-red-200">${a.msg}</div><div class="text-[10px] text-red-400">Era às ${a.time}</div></div></div>`).join('');
                 badge.classList.remove('hidden');
@@ -406,12 +444,11 @@
         }
         window.toggleNotifs = () => document.getElementById('notif-drop').classList.toggle('hidden');
 
-        // --- WEIGHT ---
         function checkMonday() { if(new Date().getDay()===1 && !state.weights[`${state.user}_${new Date().toISOString().split('T')[0]}`]) document.getElementById('weigh-in-modal').classList.remove('hidden'); }
         window.submitWeight = () => {
             const w=parseFloat(document.getElementById('weight-input').value); if(!w)return;
             const k=`${state.user}_${new Date().toISOString().split('T')[0]}`;
-            const updates = { [k]:w, [`${state.user}_last`]:w, [`${state.user}_prev`]: (state.weights[`${state.user}_last`]||w) };
+            const updates = { [k]:w, [`${state.user}_last`]:w };
             if(!state.weights[`${state.user}_start`]) updates[`${state.user}_start`] = w;
             setDoc(doc(db,"carnaval_2026","weights"),updates,{merge:true}); document.getElementById('weigh-in-modal').classList.add('hidden');
         };
@@ -425,7 +462,6 @@
             document.getElementById(`view-${t}`).classList.remove('hidden'); document.getElementById(`tab-${t}`).className = "flex-1 py-3 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-lg";
             if(t==='schedule') renderDayPreview();
         };
-
         window.addWorkout = async () => {
             const n=document.getElementById('new-wk-name').value, d=document.getElementById('new-wk-desc').value; if(!n)return;
             await setDoc(doc(db,"carnaval_2026",`workouts_${state.user}`), {...state.workouts, ["wk_"+Date.now()]:{name:n,desc:d}});
@@ -436,7 +472,6 @@
             let h=''; for(let id in state.workouts) h+=`<div class="bg-slate-800 p-3 rounded-lg border border-slate-700 flex justify-between"><div><b class="text-white text-xs">${state.workouts[id].name}</b></div><button onclick="deleteWorkout('${id}')" class="text-red-500"><i class="fa-solid fa-trash"></i></button></div>`;
             document.getElementById('workouts-list').innerHTML=h;
         };
-
         window.parseBulkText = () => {
             const text = document.getElementById('bulk-text').value, day = document.getElementById('cfg-day').value;
             const lines = text.split('\n'), items = []; let cur = null;
